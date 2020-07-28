@@ -3,6 +3,7 @@
 namespace App\Entity\User;
 
 use App\Entity\Traits\DoctrineEventsTrait;
+use App\Entity\Wine\Cellar;
 use App\Repository\User\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
@@ -21,9 +22,18 @@ class User extends BaseUser
      */
     protected $id;
 
+    /**
+     * @var Cellar
+     *
+     * @ORM\OneToOne(targetEntity="App\Entity\Wine\Cellar", mappedBy="user", fetch="EXTRA_LAZY", cascade={"persist"})
+     * @ORM\JoinColumn(name="cellar_id", referencedColumnName="id")
+     */
+    private $cellar;
+
     public function __construct()
     {
         parent::__construct();
+        $this->cellar = new Cellar($this);
     }
 
     public function setEmail($email): self
@@ -36,5 +46,17 @@ class User extends BaseUser
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getCellar(): ?Cellar
+    {
+        return $this->cellar;
+    }
+
+    public function setCellar(?Cellar $cellar): self
+    {
+        $this->cellar = $cellar;
+
+        return $this;
     }
 }

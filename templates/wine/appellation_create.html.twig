@@ -1,0 +1,18 @@
+<form id="form_appellation" name="appellation" method="post" enctype="multipart/form-data">
+    <div id="appellation">
+        <div>
+            <label for="appellation_name" class="required">Name</label>
+            <input type="text" id="appellation_name" name="appellation[name]" required="required">
+        </div>
+        <div>
+            <label for="appellation_description" class="required">Description</label>
+            <textarea id="appellation_description" name="appellation[description]" required="required"></textarea>
+        </div>
+        <div>
+            <label for="appellation_file" class="required">File</label>
+            <input type="file" id="appellation_file" name="appellation[file]" required="required">
+        </div>
+        <input type="hidden" id="appellation__token" name="appellation[_token]" value="BfR_QY-7tDoifof9qLg6oajzIygoFXrq2spzz95_dUk">
+    </div>
+    <input type="submit" value="validate">
+</form>

@@ -1,12 +1,46 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <base href="/">
+    <title>{% block title %}{% endblock %}</title>
+
+    {% block stylesheets %}
+    {% endblock %}
+</head>
+<body>
+<a href="{{ path('appellation_create') }}">appellation_create</a>
+<a href="{{ path('appellation_list') }}">appellation_list</a>
+<a href="{{ path('bottle_create') }}">bottle_create</a>
+
+{{ include('wine/appellation_create.html.twig') }}
+
+<section id="{{ app.request.attributes.get("_route") }}">
+    {% block body %}
+    {% endblock %}
+</section>
+
+<script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#form_appellation').submit(function(event) {
+            event.preventDefault();
+            console.log($(this))
+            console.log($(this).serialize())
+            $.ajax({
+                type: 'POST',
+                url: '{{ path('appellation_create') }}',
+                data: new FormData(this),
+                success: function(data) {
+                }
+            })
+        });
+    })
+</script>
+
+{% block javascripts %}
+{% endblock %}
+
+</body>
 </html>

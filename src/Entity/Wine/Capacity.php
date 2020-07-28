@@ -7,9 +7,11 @@ use App\Entity\Traits\WineTrait;
 use App\Entity\User\User;
 use App\Repository\Wine\CapacityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ORM\Table(name="wine_capacity")
  * @ORM\Entity(repositoryClass=CapacityRepository::class)
  */
 class Capacity extends AbstractWine
@@ -72,5 +74,48 @@ class Capacity extends AbstractWine
     public function removePopularity(): void
     {
         $this->popularity--;
+    }
+
+    public function getValue(): ?float
+    {
+        return $this->value;
+    }
+
+    public function setValue(float $value): self
+    {
+        $this->value = $value;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Wine[]
+     */
+    public function getWines(): Collection
+    {
+        return $this->wines;
+    }
+
+    public function addWine(Wine $wine): self
+    {
+        if (!$this->wines->contains($wine)) {
+            $this->wines[] = $wine;
+            $wine->setCapacity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWine(Wine $wine): self
+    {
+        if ($this->wines->contains($wine)) {
+            $this->wines->removeElement($wine);
+            // set the owning side to null (unless already changed)
+            if ($wine->getCapacity() === $this) {
+                $wine->setCapacity(null);
+            }
+        }
+
+        return $this;
     }
 }

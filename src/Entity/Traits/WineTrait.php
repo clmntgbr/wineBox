@@ -6,14 +6,19 @@ use App\Entity\Media;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 
 trait WineTrait
 {
-    /** @var UploadedFile|null */
+    /**
+     * @var UploadedFile|null
+     */
     public $file;
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank
      *
      * @ORM\Column(type="string")
      */
@@ -27,9 +32,11 @@ trait WineTrait
     public $slug;
 
     /**
-     * @var string|null
+     * @var string
      *
-     * @ORM\Column(type="text", nullable=true)
+     * @Assert\NotBlank
+     *
+     * @ORM\Column(type="text")
      */
     public $description;
 
@@ -38,7 +45,7 @@ trait WineTrait
      *
      * @ORM\Column(type="float", options={"default" : 0})
      */
-    private $popularity;
+    private $popularity = 0;
 
     /**
      * @var Media
@@ -80,5 +87,67 @@ trait WineTrait
         $this->popularity = $popularity;
     }
 
+    /**
+     * @return ?string
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
 
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug(string $slug): void
+    {
+        $this->slug = $slug;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @return Media
+     */
+    public function getPreview(): Media
+    {
+        return $this->preview;
+    }
+
+    /**
+     * @param Media $preview
+     */
+    public function setPreview(Media $preview): void
+    {
+        $this->preview = $preview;
+    }
 }

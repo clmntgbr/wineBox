@@ -5,16 +5,17 @@ namespace App\Entity\Wine;
 use App\Entity\Traits\DoctrineEventsTrait;
 use App\Entity\Traits\WineTrait;
 use App\Entity\User\User;
-use App\Repository\Wine\ColorRepository;
+use App\Repository\Wine\AppellationRepository;
+use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="wine_color")
- * @ORM\Entity(repositoryClass=ColorRepository::class)
+ * @ORM\Table(name="wine_appellation")
+ * @ORM\Entity(repositoryClass=AppellationRepository::class)
  */
-class Color extends AbstractWine
+class Appellation extends AbstractWine
 {
     use DoctrineEventsTrait;
     use WineTrait;
@@ -27,16 +28,9 @@ class Color extends AbstractWine
     private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="string")
-     */
-    private $CssCode;
-
-    /**
      * @var Wine[]
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\Wine\Wine",  mappedBy="color", fetch="EXTRA_LAZY", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Wine\Wine",  mappedBy="appellation", fetch="EXTRA_LAZY", cascade={"persist"})
      * @ORM\OrderBy({"createdAt" = "DESC"})
      */
     private $wines;
@@ -44,6 +38,7 @@ class Color extends AbstractWine
     public function __construct()
     {
         $this->popularity = 0;
+        $this->slug = (new Slugify())->slugify($this->name);
         $this->wines = new ArrayCollection();
     }
 
@@ -76,18 +71,6 @@ class Color extends AbstractWine
         $this->popularity--;
     }
 
-    public function getCssCode(): ?string
-    {
-        return $this->CssCode;
-    }
-
-    public function setCssCode(string $CssCode): self
-    {
-        $this->CssCode = $CssCode;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Wine[]
      */
@@ -100,7 +83,7 @@ class Color extends AbstractWine
     {
         if (!$this->wines->contains($wine)) {
             $this->wines[] = $wine;
-            $wine->setColor($this);
+            $wine->setAppellation($this);
         }
 
         return $this;
@@ -111,8 +94,8 @@ class Color extends AbstractWine
         if ($this->wines->contains($wine)) {
             $this->wines->removeElement($wine);
             // set the owning side to null (unless already changed)
-            if ($wine->getColor() === $this) {
-                $wine->setColor(null);
+            if ($wine->getAppellation() === $this) {
+                $wine->setAppellation(null);
             }
         }
 

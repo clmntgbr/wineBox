@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    {{ form_widget(form) }}
+    <input type="submit" value="validate">
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block title %}
+{% endblock %}
+

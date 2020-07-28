@@ -9,7 +9,7 @@
         "ext-simplexml": "*",
         "ext-zip": "*",
         "cocur/slugify": "^4.0",
-        "doctrine/annotations": "^1.8",
+        "doctrine/annotations": "^1.10",
         "doctrine/doctrine-migrations-bundle": "^2.0",
         "friendsofsymfony/user-bundle": "~2.0",
         "guzzlehttp/guzzle": "^6.5",
@@ -24,6 +24,7 @@
         "symfony/swiftmailer-bundle": "^3.4",
         "symfony/translation": "4.4.*",
         "symfony/twig-pack": "^1.0",
+        "symfony/validator": "4.4.*",
         "symfony/var-dumper": "4.4.*",
         "symfony/webpack-encore-bundle": "^1.7",
         "symfony/yaml": "4.4.*"
