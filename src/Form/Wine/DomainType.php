@@ -4,6 +4,8 @@ namespace App\Form\Wine;
 
 use App\Entity\Wine\Domain;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,6 +16,8 @@ class DomainType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
+            ->add('file', FileType::class)
+            ->add('submit', SubmitType::class)
         ;
     }
 

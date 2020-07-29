@@ -30,6 +30,6 @@ class Uploader
             return $media->load(sprintf(self::BASE_PATH, $type, $directory), $name, $extension, $directory, $size);
         }
 
-        return new Media(sprintf(self::BASE_PATH, $type, $directory), $name, $extension, $directory, $size);
+        return (new Media())->load(sprintf(self::BASE_PATH, $type, $directory), $name, $extension, $directory, $size);
     }
 }

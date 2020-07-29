@@ -11,11 +11,12 @@
 /public/download
 
 /.web-server-pid
+/public/gas/gas_station_price.json
 /public/.htaccess
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
-/public/build/
+#/public/build/
 npm-debug.log
 yarn-error.log
 webpack.config.js

@@ -8,6 +8,7 @@ use App\Entity\User\User;
 use App\Repository\Wine\BottleRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Table(name="wine_bottle")
@@ -106,6 +107,14 @@ class Bottle extends AbstractWine
     public function __toString(): string
     {
         return (string)$this->id;
+    }
+
+    public function hasUploadedFile(): bool
+    {
+        if ($this->file instanceof UploadedFile) {
+            return true;
+        }
+        return false;
     }
 
     public function isCreator(User $user): bool

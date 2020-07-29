@@ -25,3 +25,50 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    listener.appellation:
+        class: App\Listener\Wine\AppellationListener
+        arguments: ['@doctrine.orm.entity_manager']
+        tags:
+            - { name: doctrine.event_listener, event: onFlush,  method: onFlush }
+            - { name: doctrine.event_listener, event: prePersist,  method: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate,  method: preUpdate }
+
+    listener.domain:
+        class: App\Listener\Wine\DomainListener
+        arguments: ['@doctrine.orm.entity_manager']
+        tags:
+            - { name: doctrine.event_listener, event: onFlush,  method: onFlush }
+            - { name: doctrine.event_listener, event: prePersist,  method: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate,  method: preUpdate }
+
+    listener.color:
+        class: App\Listener\Wine\ColorListener
+        arguments: ['@doctrine.orm.entity_manager']
+        tags:
+            - { name: doctrine.event_listener, event: onFlush,  method: onFlush }
+            - { name: doctrine.event_listener, event: prePersist,  method: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate,  method: preUpdate }
+
+    listener.capacity:
+        class: App\Listener\Wine\CapacityListener
+        arguments: ['@doctrine.orm.entity_manager']
+        tags:
+            - { name: doctrine.event_listener, event: onFlush,  method: onFlush }
+            - { name: doctrine.event_listener, event: prePersist,  method: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate,  method: preUpdate }
+
+    listener.region:
+        class: App\Listener\Wine\RegionListener
+        arguments: ['@doctrine.orm.entity_manager']
+        tags:
+            - { name: doctrine.event_listener, event: onFlush,  method: onFlush }
+            - { name: doctrine.event_listener, event: prePersist,  method: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate,  method: preUpdate }
+
+    listener.wine:
+        class: App\Listener\Wine\WineListener
+        arguments: ['@doctrine.orm.entity_manager']
+        tags:
+            - { name: doctrine.event_listener, event: onFlush,  method: onFlush }
+            - { name: doctrine.event_listener, event: prePersist,  method: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate,  method: preUpdate }

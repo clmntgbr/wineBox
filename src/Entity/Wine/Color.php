@@ -9,6 +9,7 @@ use App\Repository\Wine\ColorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Table(name="wine_color")
@@ -94,6 +95,14 @@ class Color extends AbstractWine
     public function getWines(): Collection
     {
         return $this->wines;
+    }
+
+    public function hasUploadedFile(): bool
+    {
+        if ($this->file instanceof UploadedFile) {
+            return true;
+        }
+        return false;
     }
 
     public function addWine(Wine $wine): self

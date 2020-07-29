@@ -56,13 +56,8 @@ class Media
      */
     private $size;
 
-    public function __construct(string $path, string $name, string $mimeType, string $type, float $size)
+    public function __construct()
     {
-        $this->path = $path;
-        $this->name = $name;
-        $this->mimeType = $mimeType;
-        $this->type = $type;
-        $this->size = $size;
     }
 
     public function load(string $path, string $name, string $mimeType, string $type, float $size): self

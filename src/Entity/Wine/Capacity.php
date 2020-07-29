@@ -9,6 +9,7 @@ use App\Repository\Wine\CapacityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Table(name="wine_capacity")
@@ -45,6 +46,14 @@ class Capacity extends AbstractWine
     {
         $this->popularity = 0;
         $this->wines = new ArrayCollection();
+    }
+
+    public function hasUploadedFile(): bool
+    {
+        if ($this->file instanceof UploadedFile) {
+            return true;
+        }
+        return false;
     }
 
     public function getId(): ?int

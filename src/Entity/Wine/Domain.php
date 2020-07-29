@@ -9,6 +9,7 @@ use App\Repository\Wine\DomainRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Table(name="wine_domain")
@@ -85,6 +86,14 @@ class Domain extends AbstractWine
         }
 
         return $this;
+    }
+
+    public function hasUploadedFile(): bool
+    {
+        if ($this->file instanceof UploadedFile) {
+            return true;
+        }
+        return false;
     }
 
     public function removeWine(Wine $wine): self

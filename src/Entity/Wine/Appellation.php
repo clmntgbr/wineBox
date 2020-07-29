@@ -6,10 +6,10 @@ use App\Entity\Traits\DoctrineEventsTrait;
 use App\Entity\Traits\WineTrait;
 use App\Entity\User\User;
 use App\Repository\Wine\AppellationRepository;
-use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Table(name="wine_appellation")
@@ -38,8 +38,15 @@ class Appellation extends AbstractWine
     public function __construct()
     {
         $this->popularity = 0;
-        $this->slug = (new Slugify())->slugify($this->name);
         $this->wines = new ArrayCollection();
+    }
+
+    public function hasUploadedFile(): bool
+    {
+        if ($this->file instanceof UploadedFile) {
+            return true;
+        }
+        return false;
     }
 
     public function getId(): ?int
