@@ -2,6 +2,7 @@
 
 namespace App\Entity\Wine;
 
+use App\Entity\Country;
 use App\Entity\Traits\DoctrineEventsTrait;
 use App\Entity\Traits\WineTrait;
 use App\Entity\User\User;
@@ -26,6 +27,13 @@ class Region extends AbstractWine
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @var Country
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Country", inversedBy="regions", fetch="EXTRA_LAZY", cascade={"persist"})
+     */
+    private $country;
 
     /**
      * @var Wine[]
@@ -105,6 +113,18 @@ class Region extends AbstractWine
                 $wine->setRegion(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCountry(): ?Country
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?Country $country): self
+    {
+        $this->country = $country;
 
         return $this;
     }

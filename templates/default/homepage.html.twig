@@ -1,0 +1,131 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        {% for wineColor in getWineColorsInCellar %}
+            <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12 items">
+                <div class="item {{ wineColor.entity.slug }}" style="background-color: {{ wineColor.entity.cssCode }}">
+                    <span class="name {{ wineColor.entity.slug }}">{{ wineColor.entity.name }}</span>
+                    <span class="count {{ wineColor.entity.slug }}">{{ wineColor.count }}</span>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="ui form" id="chart_consumption_years">
+            <div class="field">
+                <select id="consumption_years" class="ui search dropdown">
+                    {% for value in getWineConsumptionYears %}
+                        <option value="{{ value.year }}">{{ value.year }}</option>
+                    {% endfor %}
+                    <option value="LAST_SIX_MONTH" selected>Les 6 Derniers Mois</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-12 chart_consumption" id="chart_consumption"></div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="application/javascript" src="https://code.highcharts.com/highcharts.js"></script>
+    <script>
+        $('#chart_consumption_years .ui.dropdown').dropdown({
+            action: 'activate',
+            onChange: function (value) {
+                $.get({
+                    url: '{{ path('ajax_wine_consumption_year') }}',
+                    type: 'GET',
+                    async: true,
+                    data: {'year': value},
+                    success: function (elements) {
+                        loadCharts(elements)
+                    }
+                })
+            }
+        })
+
+        $('.count').each(function () {
+            $(this).prop('Counter',0).animate({
+                Counter: $(this).text()
+            }, {
+                duration: 3000,
+                easing: 'swing',
+                step: function (now) {
+                    $(this).text(Math.ceil(now));
+                }
+            });
+        });
+
+        function loadCharts(elements) {
+            var categories = [], datas = []
+
+            var year = $('#chart_consumption_years .ui.dropdown').dropdown('get value')
+            if (year === "LAST_SIX_MONTH") {
+                year = "the Last Six Month"
+            }
+
+            console.log(year)
+
+            $.each(elements, function (index, element) {
+                categories.push(element.date)
+                datas.push(parseFloat(element.count))
+            })
+
+            Highcharts.chart('chart_consumption', {
+                chart: {
+                    type: 'line',
+                    borderWidth: 1,
+                    spacingBottom: 45,
+                    spacingTop: 25,
+                    spacingLeft: 10,
+                    spacingRight: 10,
+                    borderColor: 'rgb(230, 230, 230)',
+                    zoomType: 'x',
+                    style: {
+                        fontFamily: 'Raleway-Bold',
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
+                title: {
+                    text: 'Wine Consumption for ' + year
+                },
+                xAxis: {
+                    categories: categories
+                },
+                yAxis: {
+                    title: {
+                        text: 'Consumption (in bottles)'
+                    }
+                },
+                plotOptions: {
+                    line: {
+                        dataLabels: {
+                            enabled: true
+                        },
+                        enableMouseTracking: false
+                    }
+                },
+                series: [{
+                    name: 'EE',
+                    data: datas
+                }]
+            });
+        }
+
+        $.get({
+            url: '{{ path('ajax_wine_consumption_year') }}',
+            type: 'GET',
+            async: true,
+            data: {'year': 'LAST_SIX_MONTH'},
+            success: function (elements) {
+                loadCharts(elements)
+            }
+        })
+    </script>
+{% endblock %}

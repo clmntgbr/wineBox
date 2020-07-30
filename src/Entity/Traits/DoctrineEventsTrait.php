@@ -15,7 +15,7 @@ trait DoctrineEventsTrait
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
-    public $createdAt;
+    private $createdAt;
 
     /**
      * @var \DateTime|null
@@ -23,7 +23,7 @@ trait DoctrineEventsTrait
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime", nullable=true)
      */
-    public $updatedAt;
+    private $updatedAt;
 
     /**
      * @var User|null
@@ -32,7 +32,7 @@ trait DoctrineEventsTrait
      * @ORM\ManyToOne(targetEntity="App\Entity\User\User")
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id", nullable=true))
      */
-    public $createdBy;
+    private $createdBy;
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
@@ -53,5 +53,29 @@ trait DoctrineEventsTrait
     public function getCreatedBy(): ?User
     {
         return $this->createdBy;
+    }
+
+    /**
+     * @param \DateTime|null $createdAt
+     */
+    public function setCreatedAt(?\DateTime $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @param \DateTime|null $updatedAt
+     */
+    public function setUpdatedAt(?\DateTime $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * @param User|null $createdBy
+     */
+    public function setCreatedBy(?User $createdBy): void
+    {
+        $this->createdBy = $createdBy;
     }
 }

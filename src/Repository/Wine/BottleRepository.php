@@ -3,6 +3,7 @@
 namespace App\Repository\Wine;
 
 use App\Entity\Wine\Bottle;
+use App\Entity\Wine\Cellar;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,32 +20,37 @@ class BottleRepository extends ServiceEntityRepository
         parent::__construct($registry, Bottle::class);
     }
 
-    // /**
-    //  * @return Bottle[] Returns an array of Bottle objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getWineConsumption(Cellar $cellar, string $year)
     {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('b.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $where = sprintf("(b.empty_at >= '%s' && b.empty_at <= '%s')", sprintf('%s-01-01 00:00:00', $year), sprintf('%s-12-31 23:59:59', $year));
+        if ("LAST_SIX_MONTH" == $year) {
+            $date = (new \DateTime((new \DateTime('now'))->format('Y-m-01 H:i:s')))->sub(new \DateInterval('P5M'))->format('Y-m-01 00:00:00');
+            $where = sprintf("b.empty_at >= '%s'", $date);
+        }
+        
+        $sql = sprintf("SELECT count(b.id) as count, DATE_FORMAT(b.empty_at, '%s %s') as date
+                                FROM wine_bottle b 
+                                WHERE b.cellar_id = '%s' AND b.empty_at IS NOT NULL AND b.status = '%s' AND $where
+                                GROUP BY DATE_FORMAT(b.empty_at, '%s %s');", '%M', '%Y', $cellar->getId(), Bottle::STATUS_EMPTY, '%M', '%Y');
 
-    /*
-    public function findOneBySomeField($value): ?Bottle
-    {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $getConnection = $this->getEntityManager()->getConnection();
+        $statement = $getConnection->prepare($sql);
+        $statement->execute();
+
+        return $statement->fetchAll();
     }
-    */
+
+    public function getWineConsumptionYears(Cellar $cellar)
+    {
+        $sql = sprintf("SELECT DATE_FORMAT(b.empty_at, '%s') as year
+                                FROM wine_bottle b 
+                                WHERE b.cellar_id = '%s' AND b.empty_at IS NOT NULL AND b.status = '%s' 
+                                GROUP BY DATE_FORMAT(b.empty_at, '%s');", '%Y', $cellar->getId(), Bottle::STATUS_EMPTY, '%Y');
+
+        $getConnection = $this->getEntityManager()->getConnection();
+        $statement = $getConnection->prepare($sql);
+        $statement->execute();
+
+        return $statement->fetchAll();
+    }
 }

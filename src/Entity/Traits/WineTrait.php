@@ -4,6 +4,7 @@ namespace App\Entity\Traits;
 
 use App\Entity\Media;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -24,9 +25,9 @@ trait WineTrait
     public $name;
 
     /**
-     * @var string
+     * @Gedmo\Slug(fields={"name"})
      *
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(length=128, unique=true)
      */
     public $slug;
 

@@ -2,12 +2,10 @@
   "build/app.css": "/build/app.css",
   "build/app.js": "/build/app.js",
   "build/runtime.js": "/build/runtime.js",
-  "build/fonts/codropsicons.ttf": "/build/fonts/codropsicons.21795737.ttf",
-  "build/fonts/codropsicons.woff": "/build/fonts/codropsicons.46145616.woff",
-  "build/fonts/codropsicons.eot": "/build/fonts/codropsicons.e8498697.eot",
+  "build/fonts/Raleway-ExtraBold.ttf": "/build/fonts/Raleway-ExtraBold.3ebdff41.ttf",
+  "build/fonts/Raleway-Light.ttf": "/build/fonts/Raleway-Light.f00278d7.ttf",
   "build/fonts/ecoicons.woff": "/build/fonts/ecoicons.c5787b26.woff",
   "build/fonts/ecoicons.eot": "/build/fonts/ecoicons.c582e04a.eot",
   "build/fonts/ecoicons.ttf": "/build/fonts/ecoicons.fde3db6a.ttf",
-  "build/images/codropsicons.svg": "/build/images/codropsicons.72426cdc.svg",
   "build/images/ecoicons.svg": "/build/images/ecoicons.21f8b73e.svg"
 }

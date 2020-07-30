@@ -3,7 +3,6 @@
 namespace App\Listener\Wine;
 
 use App\Entity\Wine\Color;
-use Cocur\Slugify\Slugify;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
@@ -14,20 +13,15 @@ class ColorListener
     /** @var EntityManagerInterface */
     private $em;
 
-    /** @var Slugify */
-    private $slugify;
-
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
-        $this->slugify = new Slugify();
     }
 
     public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getObject();
         if ($entity instanceof Color) {
-            $entity->setSlug($this->slugify->slugify($entity->getName()));
         }
     }
 
@@ -35,7 +29,6 @@ class ColorListener
     {
         $entity = $args->getObject();
         if ($entity instanceof Color) {
-            $entity->setSlug($this->slugify->slugify($entity->getName()));
         }
     }
 

@@ -1,14 +1,109 @@
+@import "variables";
+
+@font-face {
+    font-family: "Raleway";
+    src: url("../fonts/Raleway/Raleway-Light.ttf");
+}
+
+@font-face {
+    font-family: "Raleway-Bold";
+    src: url("../fonts/Raleway/Raleway-ExtraBold.ttf");
+}
+
+body {
+    font-family: Raleway, sans-serif;
+}
+
 .content {
-    padding-top: 60px;
-    width: 100%;
-    min-height: 100vh;
+    padding: 70px 10px 10px 70px;
+    width: calc(100%);
+    min-height: calc(100vh);
+}
+
+.row {
+    margin: 0 auto;
 }
 
 #menu {
     .gn-menu {
-        .fas {
+        .icon i {
             width: 60px;
             text-align: center;
+        }
+    }
+}
+
+#homepage {
+    #chart_consumption_years {
+        margin: 10px 0 10px 0;
+    }
+
+    #chart_consumption {
+        padding: 0;
+    }
+
+    @media only screen and (max-width: 768px) {
+        .items:first-child {
+            margin-top: 0!important;
+            padding: 0!important;
+        }
+        .items {
+            margin-top: 10px!important;
+            padding: 0!important;
+        }
+    }
+
+    @media only screen and (max-width: 992px) {
+        .items:nth-child(even) {
+            padding-right: 0;
+        }
+        .items:nth-child(odd) {
+            padding-left: 0;
+        }
+        .items:nth-child(3), .items:nth-child(4) {
+            margin-top: 10px;
+        }
+    }
+
+    .items:first-child {
+        padding-left: 0;
+    }
+    .items:last-child {
+        padding-right: 0;
+    }
+    .items {
+        padding: 0 5px;
+        height: 150px;
+        .item {
+            border: 1px solid $border-color;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+            position: relative;
+            .name {
+                font-family: Raleway-Bold, sans-serif;
+                font-size: 30px;
+                color: #f1f1f1;
+                position: absolute;
+                left: 20px;
+                top: 10px;
+                line-height: 1;
+            }
+            .count {
+                font-family: Raleway-Bold, sans-serif;
+                font-size: 70px;
+                color: #f1f1f1;
+                position: absolute;
+                right: 10px;
+                bottom: 10px;
+                line-height: 1;
+            }
+            .count.blanc {
+                color: #7b7b7b!important;
+            }
+            .name.blanc {
+                color: #7b7b7b!important;
+            }
         }
     }
 }

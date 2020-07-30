@@ -1,3 +1,5 @@
+@import "variables";
+
 *,
 *:after,
 *::before {
@@ -24,9 +26,8 @@
     color: #5f6f81;
     list-style: none;
     text-transform: none;
-    font-weight: 300;
-    font-family: 'Lato', Arial, sans-serif;
     line-height: 60px;
+    z-index: 2;
 }
 
 .gn-menu-main {
@@ -138,7 +139,7 @@
 }
 
 .gn-submenu li a {
-    color: #c1c9d1
+    padding-left: 30px;
 }
 
 input.gn-search {
@@ -149,8 +150,6 @@ input.gn-search {
     border: none;
     background: transparent;
     color: #5f6f81;
-    font-weight: 300;
-    font-family: 'Lato', Arial, sans-serif;
     cursor: pointer;
 }
 

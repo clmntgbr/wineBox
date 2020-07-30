@@ -25,7 +25,7 @@ class User extends BaseUser
     /**
      * @var Cellar
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\Wine\Cellar", mappedBy="user", fetch="EXTRA_LAZY", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Wine\Cellar", mappedBy="user", cascade={"persist"}, fetch="EAGER")
      * @ORM\JoinColumn(name="cellar_id", referencedColumnName="id")
      */
     private $cellar;
@@ -48,12 +48,12 @@ class User extends BaseUser
         return $this->id;
     }
 
-    public function getCellar(): ?Cellar
+    public function getCellar(): Cellar
     {
         return $this->cellar;
     }
 
-    public function setCellar(?Cellar $cellar): self
+    public function setCellar(Cellar $cellar): self
     {
         $this->cellar = $cellar;
 

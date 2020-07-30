@@ -14,6 +14,7 @@ use App\Form\Wine\RegionType;
 use App\Form\Wine\WineType;
 use App\Util\Uploader;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route(name="wine_")
+ * @IsGranted("ROLE_USER", statusCode="403")
  */
 class WineController extends AbstractController
 {

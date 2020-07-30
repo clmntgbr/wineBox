@@ -3,7 +3,6 @@
 namespace App\Listener\Wine;
 
 use App\Entity\Wine\Appellation;
-use Cocur\Slugify\Slugify;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
@@ -14,20 +13,15 @@ class AppellationListener
     /** @var EntityManagerInterface */
     private $em;
 
-    /** @var Slugify */
-    private $slugify;
-
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
-        $this->slugify = new Slugify();
     }
 
     public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getObject();
         if ($entity instanceof Appellation) {
-            $entity->setSlug($this->slugify->slugify($entity->getName()));
         }
     }
 
@@ -35,7 +29,6 @@ class AppellationListener
     {
         $entity = $args->getObject();
         if ($entity instanceof Appellation) {
-            $entity->setSlug($this->slugify->slugify($entity->getName()));
         }
     }
 

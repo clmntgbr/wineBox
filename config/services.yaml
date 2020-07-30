@@ -72,3 +72,11 @@ services:
             - { name: doctrine.event_listener, event: onFlush,  method: onFlush }
             - { name: doctrine.event_listener, event: prePersist,  method: prePersist }
             - { name: doctrine.event_listener, event: preUpdate,  method: preUpdate }
+
+    listener.bottle:
+        class: App\Listener\Wine\BottleListener
+        arguments: ['@doctrine.orm.entity_manager']
+        tags:
+            - { name: doctrine.event_listener, event: onFlush,  method: onFlush }
+            - { name: doctrine.event_listener, event: prePersist,  method: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate,  method: preUpdate }

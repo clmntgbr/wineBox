@@ -3,7 +3,6 @@
 namespace App\Listener\Wine;
 
 use App\Entity\Wine\Domain;
-use Cocur\Slugify\Slugify;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
@@ -14,20 +13,16 @@ class DomainListener
     /** @var EntityManagerInterface */
     private $em;
 
-    /** @var Slugify */
-    private $slugify;
 
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
-        $this->slugify = new Slugify();
     }
 
     public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getObject();
         if ($entity instanceof Domain) {
-            $entity->setSlug($this->slugify->slugify($entity->getName()));
         }
     }
 
@@ -35,7 +30,6 @@ class DomainListener
     {
         $entity = $args->getObject();
         if ($entity instanceof Domain) {
-            $entity->setSlug($this->slugify->slugify($entity->getName()));
         }
     }
 

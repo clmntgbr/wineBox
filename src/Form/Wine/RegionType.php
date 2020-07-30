@@ -16,6 +16,7 @@ class RegionType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
+            ->add('country')
             ->add('file', FileType::class)
             ->add('submit', SubmitType::class)
         ;

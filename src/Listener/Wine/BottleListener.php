@@ -2,13 +2,13 @@
 
 namespace App\Listener\Wine;
 
-use App\Entity\Wine\Wine;
+use App\Entity\Wine\Bottle;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 
-class WineListener
+class BottleListener
 {
     /** @var EntityManagerInterface */
     private $em;
@@ -21,14 +21,14 @@ class WineListener
     public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getObject();
-        if ($entity instanceof Wine) {
+        if ($entity instanceof Bottle) {
         }
     }
 
     public function preUpdate(PreUpdateEventArgs $args)
     {
         $entity = $args->getObject();
-        if ($entity instanceof Wine) {
+        if ($entity instanceof Bottle) {
         }
     }
 

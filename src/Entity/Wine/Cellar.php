@@ -56,14 +56,6 @@ class Cellar extends AbstractWine
     private $liter = 0;
 
     /**
-     * @var User
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\User\User", inversedBy="cellar", fetch="EXTRA_LAZY", cascade={"persist"})
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     */
-    private $user;
-
-    /**
      * @var Bottle[]
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Wine\Bottle",  mappedBy="cellar", fetch="EXTRA_LAZY", cascade={"persist"})
@@ -73,10 +65,9 @@ class Cellar extends AbstractWine
 
     public function __construct(User $user)
     {
-        $this->user = $user;
         $this->createdBy = $user;
         $this->name = 'My Cellar';
-        $this->slug = 'my-cellar';
+        $this->description = 'My Cellar Description';
         $this->bottles = new ArrayCollection();
     }
 
@@ -161,18 +152,6 @@ class Cellar extends AbstractWine
     public function setLiter(float $liter): self
     {
         $this->liter = $liter;
-
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
 
         return $this;
     }
