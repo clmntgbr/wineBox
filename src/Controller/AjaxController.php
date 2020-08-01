@@ -12,7 +12,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AjaxController extends AbstractController
 {
-
     /**
      * @Route("/ajax/wine_consumption_year", name="ajax_wine_consumption_year", methods={"GET"})
      */
@@ -29,5 +28,17 @@ class AjaxController extends AbstractController
         }
 
         return new JsonResponse($wineData->getWineConsumption($year));
+    }
+
+    /**
+     * @Route("/ajax/wine_cellar_country", name="ajax_wine_cellar_country", methods={"GET"})
+     */
+    public function ajaxWineCellarCountryAction(Request $request, WineData $wineData)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            return new Response("This is not an AJAX request", 400);
+        }
+
+        return new JsonResponse($wineData->getWineInCellarByCountry());
     }
 }

@@ -38,8 +38,53 @@ body {
         margin: 10px 0 10px 0;
     }
 
-    #chart_consumption {
+    #apogee_at {
+        padding: 0 5px 0 0;
+        margin-top: 10px;
+    }
+
+    #apogee_at table{
+        border-top: none;
+    }
+
+    #apogee_at {
+        thead th {
+            font-family: Raleway, sans-serif;
+            font-size: 20px;
+        }
+    }
+
+    #alert_at {
+        padding: 0 0 0 5px;
+        margin-top: 10px;
+    }
+
+    #alert_at table{
+        border-top: none;
+    }
+
+    #alert_at {
+        thead th {
+            font-family: Raleway, sans-serif;
+            font-size: 20px;
+        }
+    }
+
+    #chart_consumption, #chart_country {
         padding: 0;
+    }
+
+    #chart_consumption {
+        margin-bottom: 10px;
+    }
+
+    #chart_country {
+        margin-top: 10px;
+    }
+
+    .highcharts-label.highcharts-data-label text{
+        font-size: 17px!important;
+        font-family: Raleway, sans-serif!important;
     }
 
     @media only screen and (max-width: 768px) {
@@ -74,12 +119,27 @@ body {
     .items {
         padding: 0 5px;
         height: 150px;
+        .consumption_liter {
+            background-color: #6a89cc;
+        }
         .item {
             border: 1px solid $border-color;
             width: 100%;
             height: 100%;
             border-radius: 8px;
             position: relative;
+            overflow: hidden;
+            .logo {
+                font-family: Raleway-Bold, sans-serif;
+                position: absolute;
+                left: -15px;
+                bottom: -15px;
+                line-height: 1;
+            }
+            .logo i {
+                font-size: 100px;
+                color: #f1f1f1;
+            }
             .name {
                 font-family: Raleway-Bold, sans-serif;
                 font-size: 30px;
@@ -102,6 +162,9 @@ body {
                 color: #7b7b7b!important;
             }
             .name.blanc {
+                color: #7b7b7b!important;
+            }
+            .logo.blanc i{
                 color: #7b7b7b!important;
             }
         }

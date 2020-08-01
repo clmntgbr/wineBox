@@ -12,10 +12,13 @@
             <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12 items">
                 <div class="item {{ wineColor.entity.slug }}" style="background-color: {{ wineColor.entity.cssCode }}">
                     <span class="name {{ wineColor.entity.slug }}">{{ wineColor.entity.name }}</span>
-                    <span class="count {{ wineColor.entity.slug }}">{{ wineColor.count }}</span>
+                    <span class="count {{ wineColor.entity.slug }}"><span class="countOnNumber">{{ wineColor.count }}</span></span>
+                    <span class="logo {{ wineColor.entity.slug }}"><i class="fas fa-wine-bottle"></i></span>
                 </div>
             </div>
         {% endfor %}
+    </div>
+    <div class="row">
         <div class="ui form" id="chart_consumption_years">
             <div class="field">
                 <select id="consumption_years" class="ui search dropdown">
@@ -28,10 +31,160 @@
         </div>
         <div class="col-lg-12 chart_consumption" id="chart_consumption"></div>
     </div>
+    <div class="row">
+        <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12 items">
+            <div class="item blanc">
+                <span class="name blanc">Bottles In Cellar</span>
+                <span class="count blanc"><span class="countOnNumber">{{ getWineCellarBottlesCount }}</span></span>
+                <span class="logo blanc"><i class="fas fa-wine-bottle"></i></span>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12 items">
+            <div class="item" style="background-color: {{ getWineCellarPercent.color }}">
+                <span class="name">Filling Rate</span>
+                <span class="count"><span class="countOnNumber">{{ getWineCellarPercent.percent }}</span>%</span>
+                <span class="logo"><i class="fas fa-wine-bottle"></i></span>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12 items">
+            <div class="item" style="background-color: {{ getWineCellarLeftPlaces.color }}">
+                <span class="name">Left Places</span>
+                <span class="count"><span class="countOnNumber">{{ getWineCellarLeftPlaces.left_places }}</span></span>
+                <span class="logo"><i class="fas fa-wine-bottle"></i></span>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12 items">
+            <div class="item consumption_liter">
+                <span class="name">Total Consumption</span>
+                <span class="count"><span class="countOnNumber">{{ wineConsumptionInLiter }}</span>L</span>
+                <span class="logo"><i class="fas fa-wine-bottle"></i></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 chart_country" id="chart_country"></div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 apogee_at items" id="apogee_at">
+            <table class="ui celled selectable striped table">
+                <thead>
+                <tr>
+                    <th colspan="3">
+                        Apogee Is Soon
+                    </th>
+                </tr></thead>
+                <tbody>
+                {% for bottle in getWineBottleApogee %}
+                    <tr>
+                        <td class="collapsing">
+                            <i class="fas fa-wine-bottle" style="color: {{ bottle.css_code }};"></i>&nbsp;&nbsp;&nbsp;<a href="">{{ bottle.name }}</a>
+                        </td>
+                        <td>{{ bottle.apogee_at|date("d F Y") }}</td>
+                        <td class="right aligned collapsing">{{ bottle.location }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-6 apogee_at items" id="alert_at">
+            <table class="ui celled selectable striped table">
+                <thead>
+                <tr>
+                    <th colspan="3">
+                        Alert Is Soon
+                    </th>
+                </tr></thead>
+                <tbody>
+                {% for bottle in getWineBottleAlert %}
+                    <tr>
+                        <td class="collapsing">
+                            <i class="fas fa-wine-bottle" style="color: {{ bottle.css_code }};"></i>&nbsp;&nbsp;&nbsp;<a href="">{{ bottle.name }}</a>
+                        </td>
+                        <td>{{ bottle.alert_at|date("d F Y") }}</td>
+                        <td class="right aligned collapsing">{{ bottle.location }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
-    <script type="application/javascript" src="https://code.highcharts.com/highcharts.js"></script>
+    <script type="application/javascript" src="https://code.highcharts.com/maps/highmaps.js"></script>
+    <script type="application/javascript" src="https://code.highcharts.com/mapdata/custom/world.js"></script>
+
+    <script>
+        $.get({
+            url: '{{ path('ajax_wine_cellar_country') }}',
+            type: 'GET',
+            async: true,
+            success: function (elements) {
+                Highcharts.mapChart('chart_country', {
+                    chart: {
+                        map: 'custom/world',
+                        borderWidth: 1,
+                        spacingBottom: 45,
+                        spacingTop: 25,
+                        spacingLeft: 10,
+                        spacingRight: 10,
+                        borderColor: 'rgb(230, 230, 230)',
+                        style: {
+                            fontFamily: 'Raleway-Bold',
+                        }
+                    },
+                    colors: [
+                        'rgba(19,64,117,0.4)',
+                        'rgba(19,64,117,0.5)',
+                        'rgba(19,64,117,0.6)',
+                        'rgba(19,64,117,0.8)',
+                        'rgba(19,64,117,1)'
+                    ],
+                    title: {
+                        text: null
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    mapNavigation: {
+                        enabled: true
+                    },
+                    colorAxis: {
+                        dataClasses: [{
+                            to: 2
+                        }, {
+                            from: 2,
+                            to: 5
+                        }, {
+                            from: 5,
+                            to: 10
+                        }, {
+                            from: 10,
+                            to: 30
+                        }, {
+                            from: 30
+                        }]
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    series: [{
+                        data: elements,
+                        joinBy: ['iso-a3', 'code'],
+                        animation: true,
+                        name: 'Wine Bottles By Country',
+                        states: {
+                            hover: {
+                                color: '#edafa4'
+                            }
+                        },
+                        shadow: false
+                    }]
+                });
+            }
+        })
+
+    </script>
     <script>
         $('#chart_consumption_years .ui.dropdown').dropdown({
             action: 'activate',
@@ -48,7 +201,7 @@
             }
         })
 
-        $('.count').each(function () {
+        $('.countOnNumber').each(function () {
             $(this).prop('Counter',0).animate({
                 Counter: $(this).text()
             }, {
@@ -61,18 +214,17 @@
         });
 
         function loadCharts(elements) {
-            var categories = [], datas = []
+            var categories = [], quantity = [], liter = []
 
             var year = $('#chart_consumption_years .ui.dropdown').dropdown('get value')
             if (year === "LAST_SIX_MONTH") {
                 year = "the Last Six Month"
             }
 
-            console.log(year)
-
             $.each(elements, function (index, element) {
                 categories.push(element.date)
-                datas.push(parseFloat(element.count))
+                quantity.push(parseFloat(element.quantity))
+                liter.push(parseFloat(element.liter))
             })
 
             Highcharts.chart('chart_consumption', {
@@ -92,6 +244,9 @@
                 legend: {
                     enabled: false
                 },
+                credits: {
+                    enabled: false
+                },
                 title: {
                     text: 'Wine Consumption for ' + year
                 },
@@ -100,20 +255,48 @@
                 },
                 yAxis: {
                     title: {
-                        text: 'Consumption (in bottles)'
+                        text: 'Consumption (Quantity & Liter)'
                     }
                 },
+                tooltip: {
+                    crosshairs: true,
+                    shared: true,
+                    style: {
+                        fontSize: 15
+                    }
+                },
+                colors: ['#7cb5ec', '#c0392b'],
                 plotOptions: {
+                    series: {
+                        label: {
+                            connectorAllowed: false,
+                            style: {
+                                fontSize: 40
+                            }
+                        },
+                    },
                     line: {
                         dataLabels: {
                             enabled: true
                         },
-                        enableMouseTracking: false
                     }
                 },
                 series: [{
-                    name: 'EE',
-                    data: datas
+                    name: 'Quantity',
+                    data: quantity,
+                    marker: {
+                        enabled: true,
+                        symbol: 'circle',
+                        radius: 6,
+                    }
+                },{
+                    name: 'Liter',
+                    data: liter,
+                    marker: {
+                        enabled: true,
+                        symbol: 'circle',
+                        radius: 6,
+                    }
                 }]
             });
         }

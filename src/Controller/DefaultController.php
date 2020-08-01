@@ -35,6 +35,12 @@ class DefaultController extends AbstractController
         return $this->render('default/homepage.html.twig', [
             'getWineColorsInCellar' => $this->wineData->getWineColorsInCellar(),
             'getWineConsumptionYears' => $this->wineData->getWineConsumptionYears(),
+            'getWineCellarBottlesCount' => $this->wineData->getWineCellarBottlesCount(),
+            'getWineCellarPercent' => $this->wineData->getWineCellarPercent(),
+            'wineConsumptionInLiter' => $user->getCellar()->getLiter(),
+            'getWineCellarLeftPlaces' => $this->wineData->getWineCellarLeftPlaces(),
+            'getWineBottleApogee' => $this->wineData->getWineBottleApogee(),
+            'getWineBottleAlert' => $this->wineData->getWineBottleAlert(),
         ]);
     }
 }

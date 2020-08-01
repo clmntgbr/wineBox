@@ -79,8 +79,8 @@ class AppFixtures extends Fixture implements ContainerAwareInterface
     {
         for ($i = 0; $i < 200; $i++) {
             $entity = new Wine();
-            $entity->setName(sprintf("Name n°%s", $i));
-            $entity->setDescription(sprintf("Description n°%s", $i));
+            $entity->setName(sprintf("Wine Name n°%s", $i));
+            $entity->setDescription(sprintf("Wine Description n°%s", $i));
             $entity->setAppellation($this->getReference(sprintf("appellation-%s", rand(0,199))));
             $entity->setColor($this->getReference(sprintf("color-%s", rand(0,3))));
             $entity->setCapacity($this->getReference(sprintf("capacity-%s", rand(0,9))));
@@ -163,8 +163,8 @@ class AppFixtures extends Fixture implements ContainerAwareInterface
     {
         for ($i = 0; $i < 200; $i++) {
             $entity = new Domain();
-            $entity->setName(sprintf("Name n°%s", $i));
-            $entity->setDescription(sprintf("Description n°%s", $i));
+            $entity->setName(sprintf("Domain Name n°%s", $i));
+            $entity->setDescription(sprintf("Domain Description n°%s", $i));
             $media = new Media();
             $media->setName(sprintf("Name n°%s", $i));
             $media->setPath("/public/download/domain/");
@@ -183,8 +183,8 @@ class AppFixtures extends Fixture implements ContainerAwareInterface
     {
         for ($i = 0; $i < 200; $i++) {
             $entity = new Region();
-            $entity->setName(sprintf("Name n°%s", $i));
-            $entity->setDescription(sprintf("Description n°%s", $i));
+            $entity->setName(sprintf("Region Name n°%s", $i));
+            $entity->setDescription(sprintf("Region Description n°%s", $i));
             $entity->setCountry($this->getReference(sprintf('country-%s', rand(0,238))));
             $media = new Media();
             $media->setName(sprintf("Name n°%s", $i));
@@ -204,8 +204,8 @@ class AppFixtures extends Fixture implements ContainerAwareInterface
     {
         for ($i = 0; $i < 200; $i++) {
             $entity = new Appellation();
-            $entity->setName(sprintf("Name n°%s", $i));
-            $entity->setDescription(sprintf("Description n°%s", $i));
+            $entity->setName(sprintf("Appellation Name n°%s", $i));
+            $entity->setDescription(sprintf("Appellation Description n°%s", $i));
             $media = new Media();
             $media->setName(sprintf("Name n°%s", $i));
             $media->setPath("/public/download/appellation/");
@@ -222,12 +222,16 @@ class AppFixtures extends Fixture implements ContainerAwareInterface
 
     private function loadBottle(ObjectManager $manager)
     {
-        for ($i = 0; $i < 43; $i++) {
+        for ($i = 0; $i < 82; $i++) {
+            $date = new \DateTime('now');
             $entity = new Bottle();
-            $entity->setName(sprintf("Name n°%s", $i));
-            $entity->setDescription(sprintf("Description n°%s", $i));
+            $entity->setName(sprintf("Bottle Name n°%s", $i));
+            $entity->setDescription(sprintf("Bottle Description n°%s", $i));
             $entity->setFamilyCode($i);
             $entity->setLocation(sprintf("%s%03d", 'A', $i));
+            $entity->setApogeeAt($date->add(new \DateInterval(sprintf("P%sD", $i))));
+            $entity->setAlertAt($date->add(new \DateInterval(sprintf("P%sD", $i*2))));
+            $entity->setAlertComment(sprintf("Bottle Alert Comment n°%s", $i));
             $entity->setWine($this->getReference(sprintf('wine-%s', rand(0,199))));
             $entity->setCellar($this->user->getCellar());
             $entity->setCreatedBy($this->user);
@@ -237,8 +241,8 @@ class AppFixtures extends Fixture implements ContainerAwareInterface
         for ($i = 0; $i < 900; $i++) {
             $date = (new \DateTime('now'))->sub(new \DateInterval(sprintf("P%sD", 900)));
             $entity = new Bottle();
-            $entity->setName(sprintf("Name n°%s", $i));
-            $entity->setDescription(sprintf("Description n°%s", $i));
+            $entity->setName(sprintf("Bottle Name n°%s", $i));
+            $entity->setDescription(sprintf("Bottle Description n°%s", $i));
             $entity->setFamilyCode($i);
             $entity->setLocation(null);
             $entity->setStatus(Bottle::STATUS_EMPTY);

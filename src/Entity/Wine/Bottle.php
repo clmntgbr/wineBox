@@ -93,6 +93,27 @@ class Bottle extends AbstractWine
      */
     private $emptyAt;
 
+    /**
+     * @var DateTimeImmutable|null
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $apogeeAt;
+
+    /**
+     * @var DateTimeImmutable|null
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $alertAt;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $alertComment;
+
     public function __construct()
     {
         $this->popularity = 0;
@@ -240,6 +261,42 @@ class Bottle extends AbstractWine
     public function setWine(?Wine $wine): self
     {
         $this->wine = $wine;
+
+        return $this;
+    }
+
+    public function getApogeeAt(): ?\DateTimeInterface
+    {
+        return $this->apogeeAt;
+    }
+
+    public function setApogeeAt(?\DateTimeInterface $apogeeAt): self
+    {
+        $this->apogeeAt = $apogeeAt;
+
+        return $this;
+    }
+
+    public function getAlertAt(): ?\DateTimeInterface
+    {
+        return $this->alertAt;
+    }
+
+    public function setAlertAt(?\DateTimeInterface $alertAt): self
+    {
+        $this->alertAt = $alertAt;
+
+        return $this;
+    }
+
+    public function getAlertComment(): ?string
+    {
+        return $this->alertComment;
+    }
+
+    public function setAlertComment(?string $alertComment): self
+    {
+        $this->alertComment = $alertComment;
 
         return $this;
     }
