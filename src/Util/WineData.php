@@ -44,10 +44,10 @@ class WineData
             $data[$wineColor->getSlug()] = ['count' => 0, 'entity' => $wineColor];
         }
 
-        $bottles = $this->entityManager->getRepository(Bottle::class)->getWineCellarBottlesCount($user->getCellar());
+        $bottles = $this->entityManager->getRepository(Bottle::class)->getWineBottlesInCellar($user->getCellar());
 
         foreach ($bottles as $bottle) {
-            $data[$bottle['slug']]['count']++;
+            $data[$bottle['color_slug']]['count']++;
         }
 
         return $data;
@@ -104,7 +104,7 @@ class WineData
         return $datas;
     }
 
-    public function getWineCellarBottlesCount()
+    public function getWineBottlesInCellarCount()
     {
         if (is_null($this->tokenStorage->getToken())) {
             return null;
@@ -113,9 +113,21 @@ class WineData
         /** @var User $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
-        $datas = $this->entityManager->getRepository(Bottle::class)->getWineCellarBottlesCount($user->getCellar());
+        $datas = $this->entityManager->getRepository(Bottle::class)->getWineBottlesInCellar($user->getCellar());
 
         return count($datas);
+    }
+
+    public function getWineBottlesInCellar()
+    {
+        if (is_null($this->tokenStorage->getToken())) {
+            return null;
+        }
+
+        /** @var User $user */
+        $user = $this->tokenStorage->getToken()->getUser();
+
+        return $this->entityManager->getRepository(Bottle::class)->getWineBottlesInCellar($user->getCellar());
     }
 
     public function getWineCellarPercent()
@@ -127,7 +139,7 @@ class WineData
         /** @var User $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
-        $percent = round(($this->getWineCellarBottlesCount()/($user->getCellar()->getHorizontal() * $user->getCellar()->getVertical()))*100);
+        $percent = round(($this->getWineBottlesInCellarCount()/($user->getCellar()->getHorizontal() * $user->getCellar()->getVertical()))*100);
 
         if ($percent <= 70) {
             return [
@@ -158,7 +170,7 @@ class WineData
         /** @var User $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
-        $leftPlaces = ($user->getCellar()->getHorizontal() * $user->getCellar()->getVertical()) - $this->getWineCellarBottlesCount();
+        $leftPlaces = ($user->getCellar()->getHorizontal() * $user->getCellar()->getVertical()) - $this->getWineBottlesInCellarCount();
 
         if ($leftPlaces <= 10) {
             return [

@@ -32,7 +32,7 @@ class Country
     /**
      * @Gedmo\Slug(fields={"name"})
      *
-     * @ORM\Column(length=128, unique=true)
+     * @ORM\Column(unique=true)
      */
     public $slug;
 
@@ -63,6 +63,13 @@ class Country
      * @ORM\Column(type="string", unique=true)
      */
     private $isoNumeric;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(type="float", options={"default" : 0})
+     */
+    private $popularity = 0;
 
     /**
      * @var Wine[]
@@ -181,6 +188,18 @@ class Country
     public function setIsoNumeric(string $isoNumeric): self
     {
         $this->isoNumeric = $isoNumeric;
+
+        return $this;
+    }
+
+    public function getPopularity(): ?float
+    {
+        return $this->popularity;
+    }
+
+    public function setPopularity(float $popularity): self
+    {
+        $this->popularity = $popularity;
 
         return $this;
     }

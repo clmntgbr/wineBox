@@ -4,10 +4,16 @@ namespace App\Util;
 
 use App\Entity\Wine\Cellar;
 
-class Generator
+class CellarGenerator
 {
-    public function load(Cellar $cellar)
+    private $isNew = false;
+
+    public function load(Cellar $cellar, ?string $bid = null)
     {
+        if ($this->isNew) {
+            $this->isNew = "<div class='redips-drag redips-clone case bottle new'></div>";
+        }
+
         $column = ['00'];
 
         for ($i = 0; $i < $cellar->getHorizontal(); $i++) {
@@ -18,10 +24,10 @@ class Generator
 
         for ($i = 0; $i < $cellar->getHorizontal(); $i++) {
             if ($i == 0) {
-                $content .= "<th colspan='1' id='trash'></th>";
+                $content .= sprintf("<th colspan='1' id='trash' class='redips-mark redips-trash first horizontal'>%s</th>", $this->isNew);
                 continue;
             }
-            $content .= sprintf("<th colspan='1' id='%s'>%s</th>", $column[$i], $column[$i]);
+            $content .= sprintf("<th colspan='1' id='%s'  class='redips-mark redips-trash first horizontal'>%s</th>", $column[$i], $column[$i]);
         }
 
         $content .= "</tr></thead><tbody>";
@@ -33,22 +39,28 @@ class Generator
                     $content .= sprintf("<th colspan='1' id='%s'>%s</th>", sprintf("%03d", $i+1), $i+1);
                     continue;
                 }
-                $content .= sprintf("<td colspan='1' id='%s%s'>%s%s</td>", $column[$j], sprintf("%03d", $i+1), $column[$j], sprintf("%03d", $i+1));
+                $content .= sprintf("<td colspan='1' id='%s%s'>X</td>", $column[$j], sprintf("%03d", $i+1));
             }
             $content .= "</tr>";
         }
-
         $content .= "</tbody></table>";
 
         return $content;
     }
 
-    function generateColumn($i) {
+    private function generateColumn($i) {
         $temporary = "";
         while ($i >= 0) {
             $temporary = chr($i % 26 + 65) . $temporary;
             $i = floor($i / 26) - 1;
         }
         return $temporary;
+    }
+
+    public function setIsNew(bool $isNew)
+    {
+        $this->isNew = $isNew;
+
+        return $this;
     }
 }

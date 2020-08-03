@@ -152,6 +152,13 @@ class AppFixtures extends Fixture implements ContainerAwareInterface
             $entity->setName($name[$i]);
             $entity->setDescription($description[$i]);
             $entity->setValue($value[$i]);
+            $media = new Media();
+            $media->setName(sprintf("Name n°%s", $i));
+            $media->setPath("/public/download/capacity/");
+            $media->setMimeType("jpeg");
+            $media->setType("capacity");
+            $media->setSize(1000);
+            $entity->setPreview($media);
             $entity->setCreatedBy($this->user);
             $manager->persist($entity);
             $this->addReference("capacity-" . $i, $entity);
@@ -222,7 +229,9 @@ class AppFixtures extends Fixture implements ContainerAwareInterface
 
     private function loadBottle(ObjectManager $manager)
     {
-        for ($i = 0; $i < 82; $i++) {
+        $rand = rand(50, 150);
+
+        for ($i = 0; $i < $rand; $i++) {
             $date = new \DateTime('now');
             $entity = new Bottle();
             $entity->setName(sprintf("Bottle Name n°%s", $i));
@@ -235,11 +244,20 @@ class AppFixtures extends Fixture implements ContainerAwareInterface
             $entity->setWine($this->getReference(sprintf('wine-%s', rand(0,199))));
             $entity->setCellar($this->user->getCellar());
             $entity->setCreatedBy($this->user);
+            $media = new Media();
+            $media->setName(sprintf("Name n°%s", $i));
+            $media->setPath("/public/download/bottle/");
+            $media->setMimeType("jpeg");
+            $media->setType("bottle");
+            $media->setSize(1000);
+            $entity->setPreview($media);
             $manager->persist($entity);
         }
 
-        for ($i = 0; $i < 900; $i++) {
-            $date = (new \DateTime('now'))->sub(new \DateInterval(sprintf("P%sD", 900)));
+        $rand = rand(500, 1000);
+
+        for ($i = 0; $i < $rand; $i++) {
+            $date = (new \DateTime('now'))->sub(new \DateInterval(sprintf("P%sD", $rand)));
             $entity = new Bottle();
             $entity->setName(sprintf("Bottle Name n°%s", $i));
             $entity->setDescription(sprintf("Bottle Description n°%s", $i));
@@ -250,6 +268,13 @@ class AppFixtures extends Fixture implements ContainerAwareInterface
             $entity->setWine($this->getReference(sprintf('wine-%s', rand(0,199))));
             $entity->setCellar($this->user->getCellar());
             $entity->setCreatedBy($this->user);
+            $media = new Media();
+            $media->setName(sprintf("Name n°%s", $i));
+            $media->setPath("/public/download/bottle/");
+            $media->setMimeType("jpeg");
+            $media->setType("bottle");
+            $media->setSize(1000);
+            $entity->setPreview($media);
             $manager->persist($entity);
         }
 

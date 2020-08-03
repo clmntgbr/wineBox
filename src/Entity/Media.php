@@ -11,6 +11,13 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class Media
 {
+    const TYPE = 'download/img';
+    const DIRECTORY_APPELLATION = 'wine/appellation';
+    const DIRECTORY_DOMAIN = 'wine/domain';
+    const DIRECTORY_REGION = 'wine/region';
+    const DIRECTORY_WINE = 'wine/wine';
+    const DIRECTORY_BOTTLE = 'wine/bottle';
+
     /** @var UploadedFile|null */
     private $file;
 
