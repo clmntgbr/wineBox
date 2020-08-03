@@ -14,7 +14,7 @@ class BoxGenerator
     private $wineData;
 
     private $isNew = false;
-    private $addBottles = false;
+    private $addBottles = true;
     private $isLocked = false;
     private $ids = [];
 
@@ -40,7 +40,7 @@ class BoxGenerator
 
         for ($i = 0; $i < $box->getHorizontal(); $i++) {
             if ($i == 0) {
-                $content .= sprintf("<th colspan='1' id='trash' class='redips-mark redips-trash horizontal'>%s</th>", $this->isNew);
+                $content .= sprintf("<th colspan='1' class='redips-mark redips-trash horizontal'>%s</th>", $this->isNew);
                 continue;
             }
             $content .= sprintf("<th colspan='1' id='%s'  class='redips-mark redips-trash horizontal'>%s</th>", $column[$i], $column[$i]);
@@ -92,7 +92,7 @@ class BoxGenerator
             }
 
             $replacement = sprintf(
-                "<td id='%s'><div id='%s' class='case bottle redips-drag' data-id='%s' data-color='%s' data-location='%s' style='background-color:%s;'></div></td>",
+                "<td id='%s'><div id='%s' class='case bottle redips-drag marked' data-id='%s' data-color='%s' data-location='%s' style='background-color:%s;'></div></td>",
                 $bottle['location'], $bottle['id'], $bottle['id'], $bottle['color_slug'], $bottle['location'], $bottle['color_css']
             );
             $content = str_replace(sprintf("<td colspan='1' id='%s'></td>", $bottle['location']), $replacement, $content);

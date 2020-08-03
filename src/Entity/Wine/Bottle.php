@@ -2,8 +2,10 @@
 
 namespace App\Entity\Wine;
 
+use App\Entity\Media;
 use App\Entity\Traits\DoctrineEventsTrait;
 use App\Entity\Traits\WineTrait;
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Entity\User\User;
 use App\Repository\Wine\BottleRepository;
 use DateTimeImmutable;
@@ -73,7 +75,9 @@ class Bottle extends AbstractWine
     public $box;
 
     /**
-     * @var Bottle
+     * @var Wine
+     *
+     * @Assert\NotBlank
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Wine\Wine", inversedBy="bottles", fetch="EXTRA_LAZY", cascade={"persist"})
      */
@@ -116,7 +120,10 @@ class Bottle extends AbstractWine
 
     public function __construct()
     {
+        $this->name = md5(uniqid());
+        $this->description = md5(uniqid());
         $this->popularity = 0;
+        $this->quantity = $this->location;
         $this->status = self::STATUS_FULL;
     }
 
@@ -132,6 +139,10 @@ class Bottle extends AbstractWine
 
     public function hasUploadedFile(): bool
     {
+        if ($this->preview instanceof Media) {
+            return true;
+        }
+
         if ($this->file instanceof UploadedFile) {
             return true;
         }

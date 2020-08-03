@@ -5,12 +5,14 @@ namespace App\Controller;
 use App\Entity\Media;
 use App\Entity\User\User;
 use App\Entity\Wine\Appellation;
+use App\Entity\Wine\Bottle;
 use App\Entity\Wine\Capacity;
 use App\Entity\Wine\Color;
 use App\Entity\Wine\Domain;
 use App\Entity\Wine\Region;
 use App\Entity\Wine\Wine;
 use App\Form\Wine\AppellationType;
+use App\Form\Wine\BottleType;
 use App\Form\Wine\DomainType;
 use App\Form\Wine\RegionType;
 use App\Form\Wine\WineType;
@@ -197,6 +199,114 @@ class WineController extends AbstractController
 
     //endregion
 
+    //region WineBottle
+
+    /**
+     * @Route("bottle/create", name="bottle_create")
+     */
+    public function wineBottleCreateAction(Request $request)
+    {
+        /** @var User */
+        $user = $this->getUser();
+
+        $entity = new Bottle();
+
+        $form = $this->createForm(BottleType::class, $entity, []);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid() && $entity->hasUploadedFile()) {
+            $media = $this->uploader->upload($entity->getFile(), null, Media::TYPE, Media::DIRECTORY_BOTTLE);
+            $persistedEntity = null;
+            $ids = array_filter(array_unique(explode(";", $entity->getLocation())));
+            if (count($ids) > 0) {
+                foreach ($ids as $location) {
+                    $bottle = clone $entity;
+                    $preview = clone $media;
+                    $familyCode = md5(uniqid());
+                    $bottle
+                        ->setLocation($location)
+                        ->setBox($user->getBox())
+                        ->setFamilyCode($familyCode)
+                        ->setPreview($preview);
+                    $this->entityManager->persist($bottle);
+                    $persistedEntity = $bottle;
+                }
+
+                $this->entityManager->flush();
+                return $this->redirectToRoute('wine_bottle_show', ['id' => $persistedEntity->getId()], 302);
+            }
+        }
+
+        return $this->render('wine/bottle_create.html.twig', [
+            'form' => $form->createView(),
+            'box' => $this->generator
+                ->setIsNew(true)
+                ->setIsLocked(true)
+                ->load($user->getBox()),
+        ]);
+    }
+
+    /**
+     * @Route("bottle/{id}/show", name="bottle_show")
+     * @ParamConverter("entity", class="App\Entity\Wine\Bottle", options={"mapping": {"id": "id"}})
+     */
+    public function wineBottleShowAction(Request $request, Bottle $entity)
+    {
+        /** @var User */
+        $user = $this->getUser();
+
+        $form = $this->createForm(BottleType::class, $entity, []);
+
+        return $this->render('wine/bottle_show.html.twig', [
+            'entity' => $entity,
+            'form' => $form->createView(),
+            'box' => $this->generator
+                ->setIds([$entity->getId()])
+                ->setIsLocked(true)
+                ->load($user->getBox()),
+        ]);
+    }
+
+    /**
+     * @Route("bottle/{id}/edit", name="bottle_edit")
+     * @ParamConverter("entity", class="App\Entity\Wine\Bottle", options={"mapping": {"id": "id"}})
+     */
+    public function wineBottleEditAction(Request $request, Bottle $entity)
+    {
+        /** @var User */
+        $user = $this->getUser();
+
+        if (!$entity->isCreator($user)) {
+            return $this->redirectToRoute('wine_box_show', [], 302);
+        }
+
+        $form = $this->createForm(BottleType::class, $entity, [
+            'file_required' => !$entity->hasPreview()
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid() && $entity->hasUploadedFile()) {
+            $media = $this->uploader->upload($entity->getFile(), null, Media::TYPE, Media::DIRECTORY_BOTTLE);
+            $entity->setPreview($media);
+            $this->entityManager->persist($entity);
+            $this->entityManager->flush();
+            return $this->redirectToRoute('wine_bottle_edit', ['id' => $entity->getId()], 302);
+        }
+
+        return $this->render('wine/bottle_show.html.twig', [
+            'entity' => $entity,
+            'form' => $form->createView(),
+            'box' => $this->generator
+                ->setIds([$entity->getId()])
+                ->setIsLocked(true)
+                ->load($user->getBox()),
+        ]);
+    }
+
+    //endregion
+
     //region WineCapacity
 
     /**
@@ -242,7 +352,6 @@ class WineController extends AbstractController
         return $this->render('wine/box_show.html.twig', [
             'box' => $this->generator
                 ->setIds([$bid])
-                ->setAddBottles(true)
                 ->load($user->getBox()),
             'bid' => $bid,
         ]);

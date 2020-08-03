@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/redips.css') }}"/>
+{% endblock %}
+
+{% block body %}
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+
+    <div id="redips-drag">
+        <div>
+            {{ box|raw }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="application/javascript" src="{{ asset('assets/js/redips.js') }}"></script>
+
+    <script>
+
+        var id
+        $(".redips-drag").mouseup(function () {
+            id = $(this).data("id")
+        })
+
+        var redipsInit = function () {
+            var rd = REDIPS.drag
+            rd.init()
+            rd.dropMode = 'single'
+            rd.clone.keyDiv = false
+            rd.event.finish = function () {
+                var find = "";
+                $(".redips-drag.case.bottle.new").each(function(index) {
+                    var id = $(this).parent().attr("id");
+                    if (id) {
+                        find += id + ";"
+                    }
+                });
+                $('#bottle_location').val(find);
+            }
+        }
+
+        if (window.addEventListener) {
+            window.addEventListener('load', redipsInit, false)
+        }
+        else if (window.attachEvent) {
+            window.attachEvent('onload', redipsInit)
+        }
+    </script>
+{% endblock %}
+

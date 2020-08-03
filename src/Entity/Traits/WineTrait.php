@@ -143,10 +143,20 @@ trait WineTrait
         return $this->preview;
     }
 
+    public function hasPreview()
+    {
+        dump($this->preview);
+        die;
+        if ($this->preview instanceof Media) {
+            return true;
+        }
+        return false;
+    }
+
     /**
-     * @param Media $preview
+     * @param ?Media $preview
      */
-    public function setPreview(Media $preview): void
+    public function setPreview(?Media $preview): void
     {
         $this->preview = $preview;
     }
