@@ -25,7 +25,7 @@ class User extends BaseUser
     /**
      * @var Cellar
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\Wine\Cellar", mappedBy="user", cascade={"persist"}, fetch="EAGER")
+     * @ORM\OneToOne(targetEntity="App\Entity\Wine\Cellar", cascade={"persist"}, fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="cellar_id", referencedColumnName="id")
      */
     private $cellar;

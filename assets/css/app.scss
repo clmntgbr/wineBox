@@ -24,12 +24,50 @@ body {
     margin: 0 auto;
 }
 
+.ui.segment {
+    box-shadow: none!important;
+}
+
+.ui.modal>.header {
+    font-family: Raleway-Bold, sans-serif!important;
+}
+
+.ui.modal {
+    top: auto;
+    left: auto;
+    height: auto!important;
+    .content {
+        min-height: auto!important;
+    }
+    .ui.input>input {
+        border-radius: 0!important;
+    }
+    .ui.label {
+        border-radius: .28571429rem 0 0 .28571429rem;
+    }
+    .ui.corner.labeled.input {
+        width: 100%;
+    }
+    .thumb-image {
+        width: 100%;
+    }
+}
+
 #menu {
     .gn-menu {
         .icon i {
             width: 60px;
             text-align: center;
         }
+    }
+    .ui.avatar.image {
+        margin: 1.5px 5px;
+        width: 55px;
+        height: 55px;
+        max-height: none;
+    }
+    .ui.inline.dropdown .menu {
+        margin-top: -1px!important;
     }
 }
 

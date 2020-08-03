@@ -62,8 +62,11 @@ class BottleRepository extends ServiceEntityRepository
 
     public function getWineCellarBottlesCount(Cellar $cellar)
     {
-        $sql = sprintf("SELECT b.id
+        $sql = sprintf("SELECT b.id, c.slug
                                 FROM wine_bottle b 
+                                INNER JOIN wine w ON w.id = b.wine_id
+                                INNER JOIN wine_appellation a ON w.appellation_id = a.id
+                                INNER JOIN wine_color c ON w.color_id = c.id
                                 WHERE b.cellar_id = '%s' AND b.status = '%s' AND b.empty_at IS NULL AND b.location IS NOT NULL                            
                                 ;", $cellar->getId(), Bottle::STATUS_FULL);
 

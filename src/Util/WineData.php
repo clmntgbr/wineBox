@@ -44,10 +44,10 @@ class WineData
             $data[$wineColor->getSlug()] = ['count' => 0, 'entity' => $wineColor];
         }
 
-        foreach ($cellar->getBottles() as $bottle) {
-            if ($bottle->getStatus() == Bottle::STATUS_FULL) {
-                $data[$bottle->getWine()->getColor()->getSlug()]['count']++;
-            }
+        $bottles = $this->entityManager->getRepository(Bottle::class)->getWineCellarBottlesCount($user->getCellar());
+
+        foreach ($bottles as $bottle) {
+            $data[$bottle['slug']]['count']++;
         }
 
         return $data;

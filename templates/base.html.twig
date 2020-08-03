@@ -24,11 +24,7 @@
                     <div class="gn-scroller">
                         <ul class="gn-menu">
                             <li>
-                                <a class="icon"><i class="fas fa-chess-board"></i>Downloads</a>
-                                <ul class="gn-submenu">
-                                    <li><a class="gn-icon gn-icon-illustrator">Vector Illustrations</a></li>
-                                    <li><a class="gn-icon gn-icon-photoshop">Photoshop files</a></li>
-                                </ul>
+                                <a class="icon appellation"><i class="fas fa-chess-board"></i>Create an Appellation</a>
                             </li>
                             <li><a class="gn-icon gn-icon-cog">Settings</a></li>
                             <li><a class="gn-icon gn-icon-help">Help</a></li>
@@ -44,9 +40,44 @@
                     </div><!-- /gn-scroller -->
                 </nav>
             </li>
-            <li><a href="http://tympanus.net/codrops">Codrops</a></li>
+            <li><a href="http://tympanus.net/codrops"></a></li>
             <li><a class="codrops-icon codrops-icon-prev" href="http://tympanus.net/Development/HeaderEffects/"><span>Previous Demo</span></a></li>
-            <li><a class="codrops-icon codrops-icon-drop" href="http://tympanus.net/codrops/?p=16030"><span>Back to the Codrops Article</span></a></li>
+            <li>
+                {% if app.user %}
+                        <div class="ui inline dropdown user">
+                            <div class="text">
+                                <img class="ui avatar image" src="https://semantic-ui.com/images/avatar/small/jenny.jpg">
+                            </div>
+                            <div class="menu">
+                                <a class="item">
+                                    Jenny Hess
+                                </a>
+                                <a class="item">
+                                    Elliot Fu
+                                </a>
+                                <a class="item">
+                                    Stevie Feliciano
+                                </a>
+                                <a class="item">
+                                    Christian
+                                </a>
+                                <a class="item">
+                                    Matt
+                                </a>
+                                <a class="item">
+                                    Justen Kitsune
+                                </a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="ui animated fade button" tabindex="0">
+                            <div class="visible content">Sign-up for a Pro account</div>
+                            <div class="hidden content">
+                                $12.99 a month
+                            </div>
+                        </div>
+                    {% endif %}
+            </li>
         </ul>
     </nav>
 
@@ -54,6 +85,56 @@
         {% block body %}
         {% endblock %}
     </section>
+
+    <div class="ui modal small appellation">
+        <i class="close icon"></i>
+        <div class="header">
+            Create an Appellation
+        </div>
+        <div class="content">
+            <form class="ui form segment row">
+                <div class="col-6">
+                    <div class="field">
+                        <label for="appellation_name" class="required">Name</label>
+                        <div class="ui corner labeled input">
+                            <input type="text" id="appellation_name" name="appellation[name]">
+                            <div class="ui corner label">
+                                <i class="asterisk icon"></i>
+                            </div>
+                        </div>
+                        <label for="appellation_description" class="required">Description</label>
+                        <div class="ui corner labeled input">
+                            <textarea id="appellation_description" name="appellation[description]"></textarea>
+                            <div class="ui corner label">
+                                <i class="asterisk icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="field">
+                        <label for="appellation_file" class="required">File</label>
+                        <input type="file" id="appellation_file" name="appellation[file]">
+                        <div class="appellation_img"></div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="field">
+                        <div class="ui black deny button">
+                            Nope
+                        </div>
+                        <div class="ui positive right labeled icon submit button">Submit</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+{#        <div class="actions">#}
+{#            <div class="ui positive right labeled icon button">#}
+{#                Yep, that's me#}
+{#                <i class="checkmark icon"></i>#}
+{#            </div>#}
+{#        </div>#}
+    </div>
 
 <script type="application/javascript" src="https://kit.fontawesome.com/cd91c1afff.js"></script>
 <script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
@@ -63,6 +144,108 @@
 
 <script>
     new gnMenu(document.getElementById('gn-menu'));
+    $('.ui.dropdown.user').dropdown({
+        action: 'select',
+        onChange: function (value) {
+
+        }
+    })
+
+    $("#appellation_file").on('change', function () {
+        var countFiles = $(this)[0].files.length;
+
+        var imgPath = $(this)[0].value;
+        var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+        var image_holder = $(".appellation_img");
+        image_holder.empty();
+
+        if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+            if (typeof (FileReader) != "undefined") {
+
+                //loop for each file selected for uploaded.
+                for (var i = 0; i < countFiles; i++) {
+
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $("<img />", {
+                            "src": e.target.result,
+                            "class": "thumb-image"
+                        }).appendTo(image_holder);
+                    }
+
+                    image_holder.show();
+                    reader.readAsDataURL($(this)[0].files[i]);
+                }
+
+            } else {
+                alert("This browser does not support FileReader.");
+            }
+        } else {
+            alert("Pls select only images");
+        }
+    })
+
+    $('.icon.appellation').click(function () {
+        $('.ui.modal.appellation').modal('show');
+    })
+
+    $('.ui.form').form({
+            fields: {
+                name: {
+                    identifier: 'appellation[name]',
+                    rules: [
+                        {
+                            type   : 'empty',
+                            prompt : 'Please enter your name'
+                        }
+                    ]
+                },
+                description: {
+                    identifier: 'appellation[description]',
+                    rules: [
+                        {
+                            type   : 'empty',
+                            prompt : 'Please enter your name'
+                        }
+                    ]
+                }
+            }
+        })
+    ;
+
+    // $("form[name='appellation']")
+    //     .form({
+    //         fields: {
+    //             appellation_name: {
+    //                 identifier: 'appellation_name',
+    //                 rules: [
+    //                     {
+    //                         type   : 'empty',
+    //                         prompt : 'Please enter your name'
+    //                     }
+    //                 ]
+    //             }
+    //         }
+    //     })
+    // ;
+
+    $("form[name='appellation']").submit(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var formData = new FormData($("form[name='appellation']")[0]);
+        $.post({
+            url: '{{ path('ajax_wine_appellation_create') }}',
+            type: 'POST',
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (elements) {
+
+            }
+        })
+    })
 </script>
 
 {% block javascripts %}
