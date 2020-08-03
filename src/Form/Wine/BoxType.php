@@ -2,12 +2,12 @@
 
 namespace App\Form\Wine;
 
-use App\Entity\Wine\Cellar;
+use App\Entity\Wine\Box;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CellarType extends AbstractType
+class BoxType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -22,7 +22,7 @@ class CellarType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Cellar::class,
+            'data_class' => Box::class,
         ]);
     }
 }

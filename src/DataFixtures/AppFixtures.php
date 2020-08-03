@@ -229,7 +229,7 @@ class AppFixtures extends Fixture implements ContainerAwareInterface
 
     private function loadBottle(ObjectManager $manager)
     {
-        $rand = rand(50, 150);
+        $rand = rand(20, 100);
 
         for ($i = 0; $i < $rand; $i++) {
             $date = new \DateTime('now');
@@ -242,7 +242,7 @@ class AppFixtures extends Fixture implements ContainerAwareInterface
             $entity->setAlertAt($date->add(new \DateInterval(sprintf("P%sD", $i*2))));
             $entity->setAlertComment(sprintf("Bottle Alert Comment n°%s", $i));
             $entity->setWine($this->getReference(sprintf('wine-%s', rand(0,199))));
-            $entity->setCellar($this->user->getCellar());
+            $entity->setBox($this->user->getBox());
             $entity->setCreatedBy($this->user);
             $media = new Media();
             $media->setName(sprintf("Name n°%s", $i));
@@ -256,6 +256,7 @@ class AppFixtures extends Fixture implements ContainerAwareInterface
 
         $rand = rand(500, 1000);
 
+
         for ($i = 0; $i < $rand; $i++) {
             $date = (new \DateTime('now'))->sub(new \DateInterval(sprintf("P%sD", $rand)));
             $entity = new Bottle();
@@ -266,7 +267,7 @@ class AppFixtures extends Fixture implements ContainerAwareInterface
             $entity->setStatus(Bottle::STATUS_EMPTY);
             $entity->setEmptyAt($date->add(new \DateInterval(sprintf("P%sD", $i))));
             $entity->setWine($this->getReference(sprintf('wine-%s', rand(0,199))));
-            $entity->setCellar($this->user->getCellar());
+            $entity->setBox($this->user->getBox());
             $entity->setCreatedBy($this->user);
             $media = new Media();
             $media->setName(sprintf("Name n°%s", $i));

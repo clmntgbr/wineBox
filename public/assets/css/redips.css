@@ -1,0 +1,20 @@
+table, th, td {
+    border: 1px solid black;
+}
+
+td, th {
+    width: 25px;
+    height: 25px;
+    text-align: center;
+}
+
+.case.bottle {
+    border: 1px solid #c6d0da!important;
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    margin: auto;
+}
+td.redips-mark {
+    background-color: #b37a7a;
+}

@@ -3,7 +3,7 @@
 namespace App\Command;
 
 use App\Entity\User\User;
-use App\Util\Generator;
+use App\Util\BoxGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -17,12 +17,12 @@ class TestingCommand extends Command
     /** @var EntityManagerInterface */
     private $em;
 
-    /** @var Generator */
+    /** @var BoxGenerator */
     private $generator;
 
     protected static $defaultName = 'app:testing';
 
-    public function __construct(EntityManagerInterface $em, Generator $generator)
+    public function __construct(EntityManagerInterface $em, BoxGenerator $generator)
     {
         parent::__construct(self::$defaultName);
         $this->em = $em;

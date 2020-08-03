@@ -5,17 +5,17 @@ namespace App\Entity\Wine;
 use App\Entity\Traits\DoctrineEventsTrait;
 use App\Entity\Traits\WineTrait;
 use App\Entity\User\User;
-use App\Repository\Wine\CellarRepository;
+use App\Repository\Wine\BoxRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
- * @ORM\Table(name="wine_cellar")
- * @ORM\Entity(repositoryClass=CellarRepository::class)
+ * @ORM\Table(name="wine_box")
+ * @ORM\Entity(repositoryClass=BoxRepository::class)
  */
-class Cellar extends AbstractWine
+class Box extends AbstractWine
 {
     use DoctrineEventsTrait;
     use WineTrait;
@@ -58,7 +58,7 @@ class Cellar extends AbstractWine
     /**
      * @var Bottle[]
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\Wine\Bottle",  mappedBy="cellar", fetch="EXTRA_LAZY", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Wine\Bottle",  mappedBy="box", fetch="EXTRA_LAZY", cascade={"persist"})
      * @ORM\OrderBy({"createdAt" = "DESC"})
      */
     private $bottles;
@@ -66,8 +66,8 @@ class Cellar extends AbstractWine
     public function __construct(User $user)
     {
         $this->createdBy = $user;
-        $this->name = 'My Cellar';
-        $this->description = 'My Cellar Description';
+        $this->name = 'My Box';
+        $this->description = 'My Box Description';
         $this->bottles = new ArrayCollection();
     }
 
@@ -101,6 +101,20 @@ class Cellar extends AbstractWine
     public function addPopularity(): void
     {
         $this->popularity++;
+    }
+
+    public function addQuantity(): self
+    {
+        $this->quantity++;
+
+        return $this;
+    }
+
+    public function addLiter(float $liter): self
+    {
+        $this->liter = $this->liter + $liter;
+
+        return $this;
     }
 
     public function removePopularity(): void
@@ -168,7 +182,7 @@ class Cellar extends AbstractWine
     {
         if (!$this->bottles->contains($bottle)) {
             $this->bottles[] = $bottle;
-            $bottle->setCellar($this);
+            $bottle->setBox($this);
         }
 
         return $this;
@@ -179,8 +193,8 @@ class Cellar extends AbstractWine
         if ($this->bottles->contains($bottle)) {
             $this->bottles->removeElement($bottle);
             // set the owning side to null (unless already changed)
-            if ($bottle->getCellar() === $this) {
-                $bottle->setCellar(null);
+            if ($bottle->getBox() === $this) {
+                $bottle->setBox(null);
             }
         }
 

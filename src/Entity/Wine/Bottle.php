@@ -66,11 +66,11 @@ class Bottle extends AbstractWine
     private $status;
 
     /**
-     * @var Cellar
+     * @var Box
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Wine\Cellar", inversedBy="bottles", fetch="EXTRA_LAZY", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Wine\Box", inversedBy="bottles", fetch="EXTRA_LAZY", cascade={"persist"})
      */
-    public $cellar;
+    public $box;
 
     /**
      * @var Bottle
@@ -241,14 +241,14 @@ class Bottle extends AbstractWine
         return $this;
     }
 
-    public function getCellar(): ?Cellar
+    public function getBox(): ?Box
     {
-        return $this->cellar;
+        return $this->box;
     }
 
-    public function setCellar(?Cellar $cellar): self
+    public function setBox(?Box $box): self
     {
-        $this->cellar = $cellar;
+        $this->box = $box;
 
         return $this;
     }

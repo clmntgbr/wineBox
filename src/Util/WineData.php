@@ -28,7 +28,7 @@ class WineData
         return $this->entityManager->getRepository(Color::class)->findAll();
     }
 
-    public function getWineColorsInCellar()
+    public function getWineColorsInBox()
     {
         if (is_null($this->tokenStorage->getToken())) {
             return null;
@@ -37,14 +37,14 @@ class WineData
         /** @var User $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
-        $cellar = $user->getCellar();
+        $box = $user->getBox();
 
         $data = [];
         foreach ($this->getWineColors() as $wineColor) {
             $data[$wineColor->getSlug()] = ['count' => 0, 'entity' => $wineColor];
         }
 
-        $bottles = $this->entityManager->getRepository(Bottle::class)->getWineBottlesInCellar($user->getCellar());
+        $bottles = $this->entityManager->getRepository(Bottle::class)->getWineBottlesInBox($user->getBox());
 
         foreach ($bottles as $bottle) {
             $data[$bottle['color_slug']]['count']++;
@@ -66,7 +66,7 @@ class WineData
         /** @var User $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
-        return $this->entityManager->getRepository(Bottle::class)->getWineConsumption($user->getCellar(), $year);
+        return $this->entityManager->getRepository(Bottle::class)->getWineConsumption($user->getBox(), $year);
     }
 
     public function getWineConsumptionYears()
@@ -78,10 +78,10 @@ class WineData
         /** @var User $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
-        return $this->entityManager->getRepository(Bottle::class)->getWineConsumptionYears($user->getCellar());
+        return $this->entityManager->getRepository(Bottle::class)->getWineConsumptionYears($user->getBox());
     }
 
-    public function getWineInCellarByCountry()
+    public function getWineInBoxByCountry()
     {
         if (is_null($this->tokenStorage->getToken())) {
             return null;
@@ -93,7 +93,7 @@ class WineData
         /** @var Country[] $countries */
         $countries = $this->entityManager->getRepository(Country::class)->findAll();
 
-        $datas = $this->entityManager->getRepository(Bottle::class)->getWineInCellarByCountry($user->getCellar());
+        $datas = $this->entityManager->getRepository(Bottle::class)->getWineInBoxByCountry($user->getBox());
 
         foreach ($countries as $country) {
             if (false === array_search($country->getIso3(), array_column($datas, 'code'))) {
@@ -104,7 +104,7 @@ class WineData
         return $datas;
     }
 
-    public function getWineBottlesInCellarCount()
+    public function getWineBottlesInBoxCount()
     {
         if (is_null($this->tokenStorage->getToken())) {
             return null;
@@ -113,12 +113,12 @@ class WineData
         /** @var User $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
-        $datas = $this->entityManager->getRepository(Bottle::class)->getWineBottlesInCellar($user->getCellar());
+        $datas = $this->entityManager->getRepository(Bottle::class)->getWineBottlesInBox($user->getBox());
 
         return count($datas);
     }
 
-    public function getWineBottlesInCellar()
+    public function getWineBottlesInBox()
     {
         if (is_null($this->tokenStorage->getToken())) {
             return null;
@@ -127,10 +127,10 @@ class WineData
         /** @var User $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
-        return $this->entityManager->getRepository(Bottle::class)->getWineBottlesInCellar($user->getCellar());
+        return $this->entityManager->getRepository(Bottle::class)->getWineBottlesInBox($user->getBox());
     }
 
-    public function getWineCellarPercent()
+    public function getWineBoxPercent()
     {
         if (is_null($this->tokenStorage->getToken())) {
             return null;
@@ -139,7 +139,7 @@ class WineData
         /** @var User $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
-        $percent = round(($this->getWineBottlesInCellarCount()/($user->getCellar()->getHorizontal() * $user->getCellar()->getVertical()))*100);
+        $percent = round(($this->getWineBottlesInBoxCount()/($user->getBox()->getHorizontal() * $user->getBox()->getVertical()))*100);
 
         if ($percent <= 70) {
             return [
@@ -161,7 +161,7 @@ class WineData
         ];
     }
 
-    public function getWineCellarLeftPlaces()
+    public function getWineBoxLeftPlaces()
     {
         if (is_null($this->tokenStorage->getToken())) {
             return null;
@@ -170,7 +170,7 @@ class WineData
         /** @var User $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
-        $leftPlaces = ($user->getCellar()->getHorizontal() * $user->getCellar()->getVertical()) - $this->getWineBottlesInCellarCount();
+        $leftPlaces = ($user->getBox()->getHorizontal() * $user->getBox()->getVertical()) - $this->getWineBottlesInBoxCount();
 
         if ($leftPlaces <= 10) {
             return [
@@ -201,7 +201,7 @@ class WineData
         /** @var User $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
-        return $this->entityManager->getRepository(Bottle::class)->getWineBottleApogee($user->getCellar());
+        return $this->entityManager->getRepository(Bottle::class)->getWineBottleApogee($user->getBox());
     }
 
     public function getWineBottleAlert()
@@ -213,6 +213,6 @@ class WineData
         /** @var User $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
-        return $this->entityManager->getRepository(Bottle::class)->getWineBottleAlert($user->getCellar());
+        return $this->entityManager->getRepository(Bottle::class)->getWineBottleAlert($user->getBox());
     }
 }

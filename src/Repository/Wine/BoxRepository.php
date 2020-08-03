@@ -2,25 +2,25 @@
 
 namespace App\Repository\Wine;
 
-use App\Entity\Wine\Cellar;
+use App\Entity\Wine\Box;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Cellar|null find($id, $lockMode = null, $lockVersion = null)
- * @method Cellar|null findOneBy(array $criteria, array $orderBy = null)
- * @method Cellar[]    findAll()
- * @method Cellar[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Box|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Box|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Box[]    findAll()
+ * @method Box[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CellarRepository extends ServiceEntityRepository
+class BoxRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Cellar::class);
+        parent::__construct($registry, Box::class);
     }
 
     // /**
-    //  * @return Cellar[] Returns an array of Cellar objects
+    //  * @return Box[] Returns an array of Box objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class CellarRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Cellar
+    public function findOneBySomeField($value): ?Box
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.exampleField = :val')

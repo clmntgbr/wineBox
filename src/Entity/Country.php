@@ -81,6 +81,7 @@ class Country
 
     public function __construct()
     {
+        $this->popularity = 0;
         $this->regions = new ArrayCollection();
     }
 

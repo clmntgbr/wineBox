@@ -14,7 +14,7 @@ use App\Form\Wine\AppellationType;
 use App\Form\Wine\DomainType;
 use App\Form\Wine\RegionType;
 use App\Form\Wine\WineType;
-use App\Util\CellarGenerator;
+use App\Util\BoxGenerator;
 use App\Util\Uploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -35,10 +35,10 @@ class WineController extends AbstractController
     /** @var Uploader */
     private $uploader;
 
-    /** @var CellarGenerator */
+    /** @var BoxGenerator */
     private $generator;
 
-    public function __construct(EntityManagerInterface $entityManager, Uploader $uploader, CellarGenerator $generator)
+    public function __construct(EntityManagerInterface $entityManager, Uploader $uploader, BoxGenerator $generator)
     {
         $this->entityManager = $entityManager;
         $this->uploader = $uploader;
@@ -227,22 +227,23 @@ class WineController extends AbstractController
 
     //endregion
 
-    //region WineCellar
+    //region WineBox
 
     /**
-     * @Route("cellar/show", name="cellar_show")
+     * @Route("box/show", name="box_show")
      */
-    public function wineCellarShowAction(Request $request)
+    public function wineBoxShowAction(Request $request)
     {
         /** @var User */
         $user = $this->getUser();
 
         $bid = $request->query->get('bid') ?? 0;
 
-        return $this->render('wine/cellar_show.html.twig', [
-            'cellar' => $this->generator
-                ->setIsNew(true)
-                ->load($user->getCellar(), $bid),
+        return $this->render('wine/box_show.html.twig', [
+            'box' => $this->generator
+                ->setIds([$bid])
+                ->setAddBottles(true)
+                ->load($user->getBox()),
             'bid' => $bid,
         ]);
     }
